@@ -17,6 +17,19 @@ def main(params):
         "nodes": {}
     }
 
+    links = {}
+    nodes = {}
+
+    for file in params['graph_file']:
+        with open(file, 'r') as file_handle:
+            graphdb = json.load(file_handle)
+            for key, link in enumerate(graphdb["batadv"]["links"]):
+                if (link["vpn"] == False):
+                    source = graphdb["batadv"]["nodes"][link["source"]]
+                    target = graphdb["batadv"]["nodes"][link["target"]]
+                    if "node_id" in source and "node_id" in target:
+                        links[source["node_id"]] = target["node_id"]
+
     for file in params['shape_file']:
         sf = shapefile.Reader(file)
         for shape in sf.shapes():
@@ -31,21 +44,38 @@ def main(params):
         with open(file, 'r') as file_handle:
             nodedb = json.load(file_handle)
             for id,n in nodedb["nodes"].items():
-                if ("nodeinfo" in n) \
-                        and ("location" in n["nodeinfo"])\
-                        and ("longitude" in n["nodeinfo"]["location"])\
-                        and ("latitude" in n["nodeinfo"]["location"]):
-                    point = Point(n["nodeinfo"]["location"]["longitude"], n["nodeinfo"]["location"]["latitude"])
-                    contained = False
-                    for segment in segments:
-                        if (segment["polygon"].contains(point)):
-                            segment["nodes"][id] = n
-                            contained = True
-                            break
-                    if not contained:
+                if not "flags" in n or not "gateway" in n["flags"] or n["flags"]["gateway"] == False:
+                    if ("nodeinfo" in n) \
+                            and ("location" in n["nodeinfo"])\
+                            and ("longitude" in n["nodeinfo"]["location"])\
+                            and ("latitude" in n["nodeinfo"]["location"]):
+
+                        point = Point(n["nodeinfo"]["location"]["longitude"], n["nodeinfo"]["location"]["latitude"])
+                        contained = False
+                        for segment in segments:
+                            if (segment["polygon"].contains(point)):
+                                n["segment"] = segment
+                                segment["nodes"][id] = n
+                                contained = True
+                                break
+                        if not contained:
+                            unknown["nodes"][id] = n
+                    else:
                         unknown["nodes"][id] = n
-                else:
-                    unknown["nodes"][id] = n
+                    nodes[id] = n
+
+
+    # Check for links of unknown nodes to nodes in other segments
+    collector = []
+    for id,n in unknown["nodes"].items():
+        if (id in links):
+            target = links[id]
+            if (target in nodes):
+                if ("segment" in nodes[target]):
+                    nodes[target]["segment"]["nodes"][id] = n
+                    collector.append(id)
+    for id in collector:
+        del unknown["nodes"][id]
 
     segments.append(unknown);
 
@@ -69,6 +99,10 @@ if __name__ == '__main__':
 
     parser.add_argument('-s', '--shape-file',
                         help='Segment polygon',
+                        nargs='+', default=[], metavar='FILE')
+
+    parser.add_argument('-g', '--graph-file',
+                        help='Graph file',
                         nargs='+', default=[], metavar='FILE')
 
     parser.add_argument('-n', '--nodes-file',
