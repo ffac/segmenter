@@ -2,7 +2,7 @@
 
 import os
 import argparse
-import fiona
+import shapefile
 from shapely.geometry import Point, shape, asShape
 import json
 import pprint
@@ -17,14 +17,12 @@ def main(params):
         "nodes": {}
     }
 
-    #point = Point(6.1041687, 50.7746345)
-
     for file in params['shape_file']:
-        fc = fiona.open(file)
-        for feature in fc:
+        sf = shapefile.Reader(file)
+        for shape in sf.shapes():
             bn = os.path.basename(file)
             segments.append({
-              "polygon": asShape(feature['geometry']),
+              "polygon": asShape(shape),
               "basename" : bn,
               "nodes": {}
             })
