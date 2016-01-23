@@ -20,6 +20,15 @@ def main(params):
     links = {}
     nodes = {}
 
+    aliases = {}
+
+    for file in params['alias_file']:
+        with open(file, 'r') as file_handle:
+            aliasdb = json.load(file_handle)
+            for alias in aliasdb:
+                aliases[alias["node_id"]] = alias
+
+
     for file in params['graph_file']:
         with open(file, 'r') as file_handle:
             graphdb = json.load(file_handle)
@@ -44,25 +53,26 @@ def main(params):
         with open(file, 'r') as file_handle:
             nodedb = json.load(file_handle)
             for id,n in nodedb["nodes"].items():
-                if not "flags" in n or not "gateway" in n["flags"] or n["flags"]["gateway"] == False:
-                    if ("nodeinfo" in n) \
-                            and ("location" in n["nodeinfo"])\
-                            and ("longitude" in n["nodeinfo"]["location"])\
-                            and ("latitude" in n["nodeinfo"]["location"]):
+                if not id in aliases:
+                    if not "flags" in n or not "gateway" in n["flags"] or n["flags"]["gateway"] == False:
+                        if ("nodeinfo" in n) \
+                                and ("location" in n["nodeinfo"])\
+                                and ("longitude" in n["nodeinfo"]["location"])\
+                                and ("latitude" in n["nodeinfo"]["location"]):
 
-                        point = Point(n["nodeinfo"]["location"]["longitude"], n["nodeinfo"]["location"]["latitude"])
-                        contained = False
-                        for segment in segments:
-                            if (segment["polygon"].contains(point)):
-                                n["segment"] = segment
-                                segment["nodes"][id] = n
-                                contained = True
-                                break
-                        if not contained:
+                            point = Point(n["nodeinfo"]["location"]["longitude"], n["nodeinfo"]["location"]["latitude"])
+                            contained = False
+                            for segment in segments:
+                                if (segment["polygon"].contains(point)):
+                                    n["segment"] = segment
+                                    segment["nodes"][id] = n
+                                    contained = True
+                                    break
+                            if not contained:
+                                unknown["nodes"][id] = n
+                        else:
                             unknown["nodes"][id] = n
-                    else:
-                        unknown["nodes"][id] = n
-                    nodes[id] = n
+                        nodes[id] = n
 
 
     # Check for links of unknown nodes to nodes in other segments
@@ -107,6 +117,10 @@ if __name__ == '__main__':
 
     parser.add_argument('-n', '--nodes-file',
                         help='Nodes file',
+                        nargs='+', default=[], metavar='FILE')
+
+    parser.add_argument('-a', '--alias-file',
+                        help='Alias file',
                         nargs='+', default=[], metavar='FILE')
 
     options = vars(parser.parse_args())

@@ -1,0 +1,212 @@
+[
+  {
+    "node_id" : "acc01dcafe01",
+    "hostname": "Supernode: Aachen-01 Segment-01",
+    "network": {
+      "mesh": {
+        "bat0": {
+          "interfaces": {
+            "tunnel": [
+              "ac:c1:2d:ca:fe:01"
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "node_id" : "acc01dcafe02",
+    "hostname": "Supernode: Aachen-02 Segment-01",
+    "network": {
+      "mesh": {
+        "bat0": {
+          "interfaces": {
+            "tunnel": [
+              "ac:c1:2d:ca:fe:02"
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "node_id" : "acc01dcafe03",
+    "hostname": "Supernode: Aachen-03 Segment-01",
+    "network": {
+      "mesh": {
+        "bat0": {
+          "interfaces": {
+            "tunnel": [
+              "ac:c1:2d:ca:fe:03"
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "node_id" : "acc01dcafe04",
+    "hostname": "Supernode: Aachen-04 Segment-01",
+    "network": {
+      "mesh": {
+        "bat0": {
+          "interfaces": {
+            "tunnel": [
+              "ac:c1:2d:ca:fe:04"
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "node_id" : "acc01dcafe05",
+    "hostname": "Supernode: Aachen-05 Segment-01",
+    "network": {
+      "mesh": {
+        "bat0": {
+          "interfaces": {
+            "tunnel": [
+              "ac:c1:2d:ca:fe:05"
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "node_id" : "acc01dcafe06",
+    "hostname": "Supernode: Aachen-06 Segment-01",
+    "network": {
+      "mesh": {
+        "bat0": {
+          "interfaces": {
+            "tunnel": [
+              "ac:c1:2d:ca:fe:06"
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "node_id" : "acc01d02fe01",
+    "hostname": "Supernode: Aachen-01 Segment-02",
+    "network": {
+      "mesh": {
+        "bat0": {
+          "interfaces": {
+            "tunnel": [
+              "ac:c1:2d:02:fe:01"
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "node_id" : "acc01d02fe02",
+    "hostname": "Supernode: Aachen-02 Segment-02",
+    "network": {
+      "mesh": {
+        "bat0": {
+          "interfaces": {
+            "tunnel": [
+              "ac:c1:2d:02:fe:02"
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "node_id" : "acc01d02fe03",
+    "hostname": "Supernode: Aachen-03 Segment-02",
+    "network": {
+      "mesh": {
+        "bat0": {
+          "interfaces": {
+            "tunnel": [
+              "ac:c1:2d:02:fe:03"
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "node_id" : "acc01d02fe04",
+    "hostname": "Supernode: Aachen-04 Segment-02",
+    "network": {
+      "mesh": {
+        "bat0": {
+          "interfaces": {
+            "tunnel": [
+              "ac:c1:2d:02:fe:04"
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "node_id" : "acc01d03fe01",
+    "hostname": "Supernode: Aachen-01 Segment-03",
+    "network": {
+      "mesh": {
+        "bat0": {
+          "interfaces": {
+            "tunnel": [
+              "ac:c1:2d:03:fe:01"
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "node_id" : "acc01d03fe02",
+    "hostname": "Supernode: Aachen-02 Segment-03",
+    "network": {
+      "mesh": {
+        "bat0": {
+          "interfaces": {
+            "tunnel": [
+              "ac:c1:2d:03:fe:02"
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "node_id" : "acc01d03fe03",
+    "hostname": "Supernode: Aachen-03 Segment-03",
+    "network": {
+      "mesh": {
+        "bat0": {
+          "interfaces": {
+            "tunnel": [
+              "ac:c1:2d:03:fe:03"
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "node_id" : "acc01d03fe04",
+    "hostname": "Supernode: Aachen-04 Segment-03",
+    "network": {
+      "mesh": {
+        "bat0": {
+          "interfaces": {
+            "tunnel": [
+              "ac:c1:2d:03:fe:04"
+            ]
+          }
+        }
+      }
+    }
+  }
+]
