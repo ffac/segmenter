@@ -90,9 +90,6 @@ def main(params):
     # Check for links of unknown nodes to nodes in other segments
     collector = []
     for id,n in unknown["nodes"].items():
-
-
-
         if (id in links):
             target = links[id]
             if (target in nodes):
@@ -103,6 +100,9 @@ def main(params):
         del unknown["nodes"][id]
 
     segments.append(unknown);
+
+
+
 
     for segment in segments:
         print("Name: " + segment["basename"])
