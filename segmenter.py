@@ -103,14 +103,20 @@ def main(params):
 
 
 
-
+    # Write mac addresses to destination dir
+    dest = params["dest_dir"]
     for segment in segments:
+        f = open(dest+"/"+segment["basename"]+".mac.txt", "w")
         print("Name: " + segment["basename"])
         for id, n in segment["nodes"].items():
             hostname = ""
             if "nodeinfo" in n and "hostname" in n["nodeinfo"]:
                 hostname = n["nodeinfo"]["hostname"]
             print("  " + id + " ("+hostname+")")
+            try:
+                f.write(n["nodeinfo"]["network"]["mesh"]["bat0"]["interfaces"]["tunnel"][0]+"\n")
+            except KeyError:
+                pass
         print("")
 
 
