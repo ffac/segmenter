@@ -33,11 +33,23 @@ def main(params):
         with open(file, 'r') as file_handle:
             graphdb = json.load(file_handle)
             for key, link in enumerate(graphdb["batadv"]["links"]):
-                if (link["vpn"] == False):
-                    source = graphdb["batadv"]["nodes"][link["source"]]
-                    target = graphdb["batadv"]["nodes"][link["target"]]
-                    if "node_id" in source and "node_id" in target:
-                        links[source["node_id"]] = target["node_id"]
+                source = graphdb["batadv"]["nodes"][link["source"]]
+                if ("node_id" in source):
+                    source = source["node_id"]
+                else:
+                    source = source["id"].replace(":", "")
+
+                target = graphdb["batadv"]["nodes"][link["target"]]
+                if ("node_id" in target):
+                    target = target["node_id"]
+                else:
+                    target = target["id"].replace(":", "")
+
+                if not source in links:
+                    links[source] = target
+                if not target in links:
+                    links[target] = source
+
 
     for file in params['shape_file']:
         sf = shapefile.Reader(file)
@@ -78,6 +90,9 @@ def main(params):
     # Check for links of unknown nodes to nodes in other segments
     collector = []
     for id,n in unknown["nodes"].items():
+
+
+
         if (id in links):
             target = links[id]
             if (target in nodes):
