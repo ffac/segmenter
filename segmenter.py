@@ -22,6 +22,8 @@ def main(params):
 
     aliases = {}
 
+    mac_to_fastd = json.load(params['key_file'])
+
     for file in params['alias_file']:
         with open(file, 'r') as file_handle:
             aliasdb = json.load(file_handle)
@@ -106,22 +108,31 @@ def main(params):
     segments.append(unknown);
 
 
-
     # Write mac addresses to destination dir
     dest = params["dest_dir"]
     for segment in segments:
-        f = open(dest+"/"+segment["basename"]+".mac.txt", "w")
-        print("Name: " + segment["basename"])
-        for id, n in segment["nodes"].items():
-            hostname = ""
-            if "nodeinfo" in n and "hostname" in n["nodeinfo"]:
-                hostname = n["nodeinfo"]["hostname"]
-            print("  " + id + " ("+hostname+")")
-            try:
-                f.write(n["nodeinfo"]["network"]["mesh"]["bat0"]["interfaces"]["tunnel"][0]+"\n")
-            except KeyError:
-                pass
+        segment_dir = dest+"/"+segment["basename"]
+        os.makedirs(segment_dir, exist_ok=True)
+        with open(dest+"/"+segment["basename"]+".mac.txt", "w") as f:
+            print("Name: " + segment["basename"])
+            for id, n in segment["nodes"].items():
+                hostname = ""
+                if "nodeinfo" in n and "hostname" in n["nodeinfo"]:
+                    hostname = n["nodeinfo"]["hostname"]
+                print("  " + id + " ("+hostname+")")
+                try:
+                    tun_mac = n["nodeinfo"]["network"]["mesh"]["bat0"]["interfaces"]["tunnel"][0]
+                    f.write(tun_mac+"\n")
+                    try:
+                        fastd_key = mac_to_fastd[tun_mac]
+                        with open(segment_dir+"/"+ id  + "-" + hostname, "w") as nf:
+                            nf.write("key \"" + fastd_key + "\";\n")
+                    except KeyError:
+                        print("Node without fastd key!")
+                except KeyError:
+                    print("Node without tunnel!")
         print("")
+
 
 
 
@@ -147,6 +158,12 @@ if __name__ == '__main__':
     parser.add_argument('-a', '--alias-file',
                         help='Alias file',
                         nargs='+', default=[], metavar='FILE')
+
+    parser.add_argument('-k', '--key-file',
+                        help='Key file',
+                        type=argparse.FileType('r'),
+                        metavar='FILE')
+
 
     options = vars(parser.parse_args())
     main(options)
