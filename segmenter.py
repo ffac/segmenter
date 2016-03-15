@@ -66,7 +66,8 @@ def main(params):
     for file in params['nodes_file']:
         with open(file, 'r') as file_handle:
             nodedb = json.load(file_handle)
-            for id,n in nodedb["nodes"].items():
+            for n in nodedb["nodes"]:
+                id=n["nodeinfo"]["node_id"]
                 if not id in aliases:
                     if not "flags" in n or not "gateway" in n["flags"] or n["flags"]["gateway"] == False:
                         if ("nodeinfo" in n) \
