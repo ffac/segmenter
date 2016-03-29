@@ -13,7 +13,7 @@ def main(params):
     segments = []
 
     unknown = {
-        "basename": "unknown",
+        "id": "u",
         "nodes": {}
     }
 
@@ -54,14 +54,16 @@ def main(params):
 
 
     for file in params['shape_file']:
-        sf = shapefile.Reader(file)
-        for shape in sf.shapes():
-            bn = os.path.basename(file)
-            segments.append({
-              "polygon": asShape(shape),
-              "basename" : bn,
-              "nodes": {}
-            })
+        with open(file, 'r') as file_handle:
+            shapedefs = json.load(file_handle)
+            for shapedef in shapedefs:
+                sf = shapefile.Reader(shapedef["file"])
+                for shape in sf.shapes():
+                    segments.append({
+                        "polygon": asShape(shape),
+                        "id": shapedef["id"],
+                        "nodes": {}
+                    })
 
     for file in params['nodes_file']:
         with open(file, 'r') as file_handle:
@@ -112,10 +114,10 @@ def main(params):
     # Write mac addresses to destination dir
     dest = params["dest_dir"]
     for segment in segments:
-        segment_dir = dest+"/"+segment["basename"]
+        segment_dir = dest+"/segment_"+segment["id"]
         os.makedirs(segment_dir, exist_ok=True)
-        with open(dest+"/"+segment["basename"]+".mac.txt", "w") as f:
-            print("Name: " + segment["basename"])
+        with open(dest+"/segment_"+segment["id"]+".mac.txt", "w") as f:
+            print("Name: " + segment["id"])
             for id, n in segment["nodes"].items():
                 hostname = ""
                 if "nodeinfo" in n and "hostname" in n["nodeinfo"]:
