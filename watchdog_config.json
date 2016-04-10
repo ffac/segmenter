@@ -48,5 +48,22 @@
             "batman": "bat07",
             "gateways": ["ac:c1:2d:07:fe:01","ac:c1:2d:07:fe:02","ac:c1:2d:07:fe:03","ac:c1:2d:07:fe:04"]
         }
+    },
+    "fastd-sockets": {
+        "tap-server": "fastd-server.sock",
+        "tap-v4-nodes": "fastd-01-clients-v4.sock",
+        "tap-v6-nodes": "fastd-01-clients-v6.sock",
+        "tap-02-server": "fastd-02-server.sock",
+        "tap-02-nodes": "fastd-02-clients.sock",
+        "tap-03-server": "fastd-03-server.sock",
+        "tap-03-nodes": "fastd-03-clients.sock",
+        "tap-04-server": "fastd-04-server.sock",
+        "tap-04-nodes": "fastd-04-clients.sock",
+        "tap-05-server": "fastd-05-server.sock",
+        "tap-05-nodes": "fastd-05-clients.sock",
+        "tap-06-server": "fastd-06-server.sock",
+        "tap-06-nodes": "fastd-06-clients.sock",
+        "tap-07-server": "fastd-07-server.sock",
+        "tap-07-nodes": "fastd-07-clients.sock"
     }
 }

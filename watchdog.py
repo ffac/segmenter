@@ -33,7 +33,7 @@ class Watchdog:
         gws = self.batman_parser.gateways(batman_if)
 
         for gw in gws:
-            if gw in segment_config['gateways']:
+            if gw.gateway in segment_config['gateways']:
                 print("matching gw: {}".format(gw))
             else:
                 print("bad gw: {}".format(gw))
@@ -43,7 +43,8 @@ class Watchdog:
                 else:
                     print("link from segment {} to unknown gateway {} detected".format(segment, gw.gateway))
                 try:
-                    fastd_status = self.fastd_parser.status(gw.interface)
+                    socketname = self.config['fastd-sockets'][gw.interface]
+                    fastd_status = self.fastd_parser.status(socketname)
                     peer = self.fastd_parser.peer_for_mac(fastd_status, gw.nexthop)
                     if peer:
                         print("peer is {} (IP: {}, MACs: {})".format(peer[1]['name'], peer[1]['address'], peer[1]['connection']['mac_addresses']))
