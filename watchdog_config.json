@@ -34,7 +34,7 @@
         },
         "04": {
             "batman": "bat04",
-            "gateways": ["ac:c1:2d:04:fe:01","ac:c1:2d:04:fe:02","ac:c1:2d:04:fe:03","ac:c1:2d:04:fe:04"]
+            "gateways": ["ac:c0:1d:04:fe:01","ac:c1:2d:04:fe:02","ac:c1:2d:04:fe:03","ac:c1:2d:04:fe:04"]
         },
         "05": {
             "batman": "bat05",
