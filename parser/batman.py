@@ -1,3 +1,5 @@
+import re
+
 class Gateway:
     def __init__(self, gateway, tq, nexthop, interface):
         self.gateway = gateway
@@ -16,6 +18,7 @@ class BatmanParser:
 
     def __init__(self, basepath = "/sys/kernel/debug/batman_adv/"):
         self.basepath = basepath
+        self.RE = re.compile(r' *([^ ]*) \(([^)]*)\) ([^ ]*) \[([^]]*)\]:')
 
     def gateways(self, device):
         filename = self.basepath + "/" + device + "/gateways"
@@ -23,7 +26,11 @@ class BatmanParser:
         with open(filename, 'r') as file:
             file.readline() # discard header
             for line in file.readlines():
-                g,t,n,i,r = line.split(None, 4)
-                ret.append(Gateway(g,t[1:-1],n,i[1:-2]))
+                m = self.RE.match(line)
+                if m:
+                    g,t,n,i = m.groups()
+                else:
+                    print("no match: "+line)
+                ret.append(Gateway(g,t,n,i))
         return ret
 
