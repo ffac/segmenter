@@ -45,7 +45,7 @@ class Watchdog:
                 try:
                     socketname = self.config['fastd-sockets'][gw.interface]
                     fastd_status = self.fastd_parser.status(socketname)
-                    peer = self.fastd_parser.peer_for_mac(fastd_status, gw.nexthop)
+                    peer = self.fastd_parser.peer_for_mac(fastd_status, gw.nexthop)[0]
                     if peer:
                         print("peer is {} (IP: {}, MACs: {})".format(peer[1]['name'], peer[1]['address'], peer[1]['connection']['mac_addresses']))
                         print('key "{}";'.format(peer[0]))
