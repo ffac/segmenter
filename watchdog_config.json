@@ -1,0 +1,52 @@
+{
+    "nodes": {
+        "node01": {
+            "fastd_path": "/tmp"
+        },
+        "node02": {
+            "fastd_path": "/tmp"
+        },
+        "node03": {
+            "fastd_path": "/tmp"
+        },
+        "node04": {
+            "fastd_path": "/tmp"
+        },
+        "node05": {
+            "fastd_path": "/tmp"
+        },
+        "node06": {
+            "fastd_path": "/tmp"
+        }
+    },
+    "segments": {
+        "default": {
+            "batman": "bat0",
+            "gateways": ["ac:c1:2d:ca:fe:01","ac:c1:2d:ca:fe:02","ac:c1:2d:ca:fe:03","ac:c1:2d:ca:fe:04"]
+        },
+        "02": {
+            "batman": "bat02",
+            "gateways": ["ac:c1:2d:02:fe:01","ac:c1:2d:02:fe:02","ac:c1:2d:02:fe:03","ac:c1:2d:02:fe:04"]
+        },
+        "03": {
+            "batman": "bat03",
+            "gateways": ["ac:c1:2d:03:fe:01","ac:c1:2d:03:fe:02","ac:c1:2d:03:fe:03","ac:c1:2d:03:fe:04"]
+        },
+        "04": {
+            "batman": "bat04",
+            "gateways": ["ac:c1:2d:04:fe:01","ac:c1:2d:04:fe:02","ac:c1:2d:04:fe:03","ac:c1:2d:04:fe:04"]
+        },
+        "05": {
+            "batman": "bat05",
+            "gateways": ["ac:c1:2d:05:fe:01","ac:c1:2d:05:fe:02","ac:c1:2d:05:fe:03","ac:c1:2d:05:fe:04"]
+        },
+        "06": {
+            "batman": "bat06",
+            "gateways": ["ac:c1:2d:06:fe:01","ac:c1:2d:06:fe:02","ac:c1:2d:06:fe:03","ac:c1:2d:06:fe:04"]
+        },
+        "07": {
+            "batman": "bat07",
+            "gateways": ["ac:c1:2d:07:fe:01","ac:c1:2d:07:fe:02","ac:c1:2d:07:fe:03","ac:c1:2d:07:fe:04"]
+        }
+    }
+}
