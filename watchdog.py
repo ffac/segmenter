@@ -53,9 +53,9 @@ class Watchdog:
                             print("peer is {} (IP: {}, MACs: {})".format(peer[1]['name'], peer[1]['address'], peer[1]['connection']['mac_addresses']))
                             print('key "{}";'.format(peer[0]))
                             known = self.known_shorts.get(peer[0])
-                            if known == None or known['segment'] != segment:
+                            if known == None or known.get('segment') != segment:
                                 print("New entry - send alert!") # TODO implement alert
-                                self.known_shorts[peer[0]] = { segment: segment }
+                                self.known_shorts[peer[0]] = { 'segment': segment }
 
                     except Exception as e:
                         print("error finding fastd key: {}".format(e))
