@@ -145,5 +145,6 @@
       "fastd_socket": "fastd-01-clients-v6.sock",
       "ignore": false
     }
-  }
+  },
+  "slack-webhook-url-file": "/root/.slack-webhook-url"
 }
