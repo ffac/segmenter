@@ -24,6 +24,7 @@ class Watchdog:
         self.nodeconfig = config['nodes'][nodename]
         self.fastd_parser = parser.fastd.FastdParser(self.nodeconfig['fastd_path'])
         self.batman_parser = parser.batman.BatmanParser("/sys/kernel/debug/batman_adv")
+        self.known_shorts = {}
 
     def check_segment(self, segment):
         #print("Checking segment {} on supernode {}".format(segment, self.nodename))
@@ -51,6 +52,11 @@ class Watchdog:
                         if peer:
                             print("peer is {} (IP: {}, MACs: {})".format(peer[1]['name'], peer[1]['address'], peer[1]['connection']['mac_addresses']))
                             print('key "{}";'.format(peer[0]))
+                            known = self.known_shorts.get(peer[0])
+                            if known == None or known['segment'] != segment:
+                                print("New entry - send alert!") # TODO implement alert
+                                self.known_shorts[peer[0]] = { segment: segment }
+
                     except Exception as e:
                         print("error finding fastd key: {}".format(e))
 
