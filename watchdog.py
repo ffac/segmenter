@@ -60,7 +60,8 @@ class Watchdog:
                         fastd_status = self.fastd_parser.status(socketname)
                         peer = self.fastd_parser.peer_for_mac(fastd_status, gw.nexthop)[0]
                         if peer:
-                            msg += ("peer is {} (IP: {}, MACs: {})\n".format(peer[1]['name'], peer[1]['address'], peer[1]['connection']['mac_addresses']))
+                            msg += ("peer is {} (MACs: {})\n".format(peer[1]['name'], peer[1]['connection']['mac_addresses']))
+                            print("peer ip is {}".format(peer[1]['address']))
                             msg += ('key "{}";\n'.format(peer[0]))
                             known = self.known_shorts.get(peer[0])
                             if self.webhook_url != None and known == None or known.get('segment') != segment:
