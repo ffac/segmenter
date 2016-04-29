@@ -60,7 +60,7 @@ old_commit=$(git rev-parse HEAD)
 
 trap "git reset --hard \"$old_commit\"" EXIT
 
-old_entry=$(git grep -l '^key "'$KEY'";')
+old_entry=$(git grep -l '^key "'$KEY'";' || true)
 
 if [ "$old_entry" != "" ]; then
 	if [ ! -f "$old_entry" ]; then

@@ -8,10 +8,13 @@ import time
 import parser.fastd
 import parser.batman
 import requests
+import os
+import subprocess
 
 def main(params):
     config = json.load(params['config_file'])
     nodename = params['node_name']
+    os.environ["SUPERNODE"] = nodename
 
     watchdog = Watchdog(config, nodename)
 
@@ -64,12 +67,16 @@ class Watchdog:
                             print("peer ip is {}".format(peer[1]['address']))
                             msg += ('key "{}";\n'.format(peer[0]))
                             known = self.known_shorts.get(peer[0])
-                            if self.webhook_url != None and known == None or known.get('segment') != segment:
-                                print("New entry - send alert!") # TODO implement alert
-                                self.known_shorts[peer[0]] = { 'segment': segment }
-                                payload= { 'username': 'watchdog on '+self.nodename, 'text': "```" + msg + "```", 'icon_emoji': ':dog2' }
-                                r=requests.post(self.webhook_url,data=json.dumps(payload))
-                                print("{} {}".format(r.status_code, r.text))
+                            if known == None or known.get('segment') != segment: # new short circuit
+                                if self.webhook_url != None:
+                                    print("New entry - send alert!") # TODO implement alert
+                                    self.known_shorts[peer[0]] = { 'segment': segment }
+                                    payload= { 'username': 'watchdog on '+self.nodename, 'text': "```" + msg + "```", 'icon_emoji': ':dog2' }
+                                    r=requests.post(self.webhook_url,data=json.dumps(payload))
+                                    print("{} {}".format(r.status_code, r.text))
+                                if segment_config['prio'] < self.config['segments'][other_seg]['prio']:
+                                    print("Move node to other segment")
+                                    subprocess.call(["./move_to_segment.sh", "./staging", other_seg, peer[0]])
 
                     except Exception as e:
                         print("error finding fastd key: {}".format(e))
