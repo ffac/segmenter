@@ -93,23 +93,26 @@ def main(params):
 
 
     # Check for links of unknown nodes to nodes in other segments
-    done = False
-    while not done:
-        done = True
-        collector = []
-        for id,n in unknown["nodes"].items():
-            if (id in links):
-                target = links[id]
-                if (target in nodes):
-                    if ("segment" in nodes[target]):
-                        nodes[target]["segment"]["nodes"][id] = n
-                        collector.append(id)
-                        done = False
-        for id in collector:
-            del unknown["nodes"][id]
+    def follow_links():
+        done = False
+        while not done:
+            done = True
+            collector = []
+            for id,n in unknown["nodes"].items():
+                if (id in links):
+                    target = links[id]
+                    if (target in nodes):
+                        if ("segment" in nodes[target]):
+                            n["segment"] = nodes[target]["segment"]
+                            nodes[target]["segment"]["nodes"][id] = n
+                            collector.append(id)
+                            done = False
+            for id in collector:
+                del unknown["nodes"][id]
+
+    follow_links()
 
     segments.append(unknown);
-
 
     # Write mac addresses to destination dir
     dest = params["dest_dir"]
