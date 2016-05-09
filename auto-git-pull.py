@@ -5,6 +5,16 @@ import socketserver
 import subprocess
 import os
 import sys
+import pwd
+
+def drop_privs(user):
+    pwnam = pwd.getpwnam(user)
+    if os.getgid() != pwnam.pw_gid:
+        os.setgid(pwnam.pw_gid)
+    if os.getuid() != pwnam.pw_uid:
+        os.setuid(pwnam.pw_uid)
+
+drop_privs("fastd")
 
 PORT = 11684
 
