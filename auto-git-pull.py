@@ -22,7 +22,7 @@ GITBASEDIR="/etc/fastd/.peers/fastd-peers-clients"
 
 os.chdir(GITBASEDIR)
 
-if not os.path.isdir("."):
+if not os.path.isdir(".git"):
     sys.exit("bad repo basedir")
 
 if len(subprocess.check_output(["git", "status", "--porcelain"])) != 0:
