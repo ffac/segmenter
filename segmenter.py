@@ -23,6 +23,7 @@ def main(params):
     aliases = {}
 
     mac_to_fastd = json.load(params['key_file'])
+    fastd_to_mac = {v: k for k, v in mac_to_fastd.items()}
 
     for file in params['alias_file']:
         with open(file, 'r') as file_handle:
@@ -65,6 +66,24 @@ def main(params):
                         "nodes": {}
                     })
 
+    # Load already assigned nodes from destdir
+    known_nodes = dict()
+    if params["fastd_dir"]:
+        for segment in segments:
+            segment_dir = params["fastd_dir"]+"/segment-"+segment["id"]
+            if os.path.isdir(segment_dir):
+                for fn in os.listdir(segment_dir):
+                    if os.path.isfile(segment_dir + "/" + fn):
+                        with open(segment_dir + "/" + fn) as f:
+                            for line in f:
+                                if line.startswith("#"):
+                                    continue
+                                if line.startswith("key "):
+                                    fastd_key = line[5:5+64]
+                                    if fastd_key in fastd_to_mac:
+                                        mac = fastd_to_mac[fastd_key]
+                                        known_nodes[mac] = segment
+
     for file in params['nodes_file']:
         with open(file, 'r') as file_handle:
             nodedb = json.load(file_handle)
@@ -72,6 +91,17 @@ def main(params):
                 id=n["nodeinfo"]["node_id"]
                 if not id in aliases:
                     if not "flags" in n or not "gateway" in n["flags"] or n["flags"]["gateway"] == False:
+                        nodes[id] = n
+                        try:
+                            tun_mac = n["nodeinfo"]["network"]["mesh"]["bat0"]["interfaces"]["tunnel"][0]
+                            if tun_mac in known_nodes:
+                                segment = known_nodes[tun_mac]
+                                n["segment"] = segment
+                                segment["nodes"][id] = n
+                                continue
+                        except KeyError:
+                            pass
+
                         if ("nodeinfo" in n) \
                                 and ("location" in n["nodeinfo"])\
                                 and ("longitude" in n["nodeinfo"]["location"])\
@@ -89,7 +119,6 @@ def main(params):
                                 unknown["nodes"][id] = n
                         else:
                             unknown["nodes"][id] = n
-                        nodes[id] = n
 
 
     # Check for links of unknown nodes to nodes in other segments
@@ -117,7 +146,7 @@ def main(params):
     # Write mac addresses to destination dir
     dest = params["dest_dir"]
     for segment in segments:
-        segment_dir = dest+"/segment_"+segment["id"]
+        segment_dir = dest+"/segment-"+segment["id"]
         os.makedirs(segment_dir, exist_ok=True)
         with open(dest+"/segment_"+segment["id"]+".mac.txt", "w") as f:
             print("Name: " + segment["id"])
@@ -148,6 +177,10 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--dest-dir', action='store',
                         help='Write output to destination directory',
                         required=True)
+
+    parser.add_argument('-f', '--fastd-dir', action='store',
+                        help='Directory with already known fastd key assignments',
+                        required=False)
 
     parser.add_argument('-s', '--shape-file',
                         help='Segment polygon',
