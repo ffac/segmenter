@@ -44,10 +44,10 @@ class WebhookHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         self.do_GET()
 
     def reload(self):
-        for seg in range(2,7):
+        for seg in range(1,7):
             fn = "/var/run/fastd.{0:02}-clients.pid".format(seg)
             subprocess.call(["pkill", "-HUP", "-F", fn])
-        for fn in ["/var/run/fastd.01-clients-v4.pid","/var/run/fastd.01-clients-v6.pid"]:
+        for fn in ["/var/run/fastd.00-clients.pid"]:
             subprocess.call(["pkill", "-USR2", "-F", fn])
 
     def pull_from_github(self):
