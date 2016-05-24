@@ -20,7 +20,10 @@ def main(params):
 
     while True:
         for segment in config['segments']:
-            watchdog.check_segment(segment)
+            try:
+                watchdog.check_segment(segment)
+            except Exception as e:
+                print("error checking segment {}: {}".format(segment,e))
         time.sleep(1)
 
 class Watchdog:
