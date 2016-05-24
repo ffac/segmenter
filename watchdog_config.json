@@ -146,6 +146,10 @@
       "fastd_socket": "fastd-01-clients.sock",
       "ignore": false
     },
+    "tap-01-server": {
+      "fastd_socket": "fastd-01-server.sock",
+      "ignore": true
+    },
     "tap-02-nodes": {
       "fastd_socket": "fastd-02-clients.sock",
       "ignore": false
