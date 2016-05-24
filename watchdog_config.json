@@ -124,6 +124,14 @@
     }
   },
   "interfaces": {
+    "tap-00-nodes": {
+      "fastd_socket": "fastd-00-clients.sock",
+      "ignore": false
+    },
+    "tap-01-nodes": {
+      "fastd_socket": "fastd-01-clients.sock",
+      "ignore": false
+    },
     "tap-02-nodes": {
       "fastd_socket": "fastd-02-clients.sock",
       "ignore": false
@@ -176,14 +184,6 @@
       "fastd_socket": "fastd-server.sock",
       "ignore": true
     },
-    "tap-v4-nodes": {
-      "fastd_socket": "fastd-01-clients-v4.sock",
-      "ignore": false
-    },
-    "tap-v6-nodes": {
-      "fastd_socket": "fastd-01-clients-v6.sock",
-      "ignore": false
-    }
   },
   "slack-webhook-url-file": "/root/.slack-webhook-url"
 }
