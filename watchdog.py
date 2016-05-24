@@ -21,7 +21,7 @@ def main(params):
     while True:
         for segment in config['segments']:
             watchdog.check_segment(segment)
-        time.sleep(10)
+        time.sleep(1)
 
 class Watchdog:
     def __init__(self, config, nodename):
