@@ -38,6 +38,20 @@
       ],
       "prio": 0
     },
+    "01": {
+      "batman": "bat01",
+      "gateways": [
+        "ac:c1:2d:01:fe:01",
+        "ac:c1:2d:01:fe:02",
+        "ac:c1:2d:01:fe:03",
+        "ac:c1:2d:01:fe:04",
+        "ac:c0:1d:01:fe:01",
+        "ac:c0:1d:01:fe:02",
+        "ac:c0:1d:01:fe:03",
+        "ac:c0:1d:01:fe:04"
+      ],
+      "prio": 1
+    },
     "02": {
       "batman": "bat02",
       "gateways": [
