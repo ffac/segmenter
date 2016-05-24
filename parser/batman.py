@@ -29,8 +29,8 @@ class BatmanParser:
                 m = self.RE.match(line)
                 if m:
                     g,t,n,i = m.groups()
+                    ret.append(Gateway(g,t,n,i))
                 else:
                     print("no match: "+line)
-                ret.append(Gateway(g,t,n,i))
         return ret
 
