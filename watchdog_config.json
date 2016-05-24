@@ -183,7 +183,7 @@
     "tap-server": {
       "fastd_socket": "fastd-server.sock",
       "ignore": true
-    },
+    }
   },
   "slack-webhook-url-file": "/root/.slack-webhook-url"
 }
