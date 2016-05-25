@@ -58,13 +58,16 @@ def main(params):
         with open(file, 'r') as file_handle:
             shapedefs = json.load(file_handle)
             for shapedef in shapedefs:
-                sf = shapefile.Reader(shapedef["file"])
-                for shape in sf.shapes():
-                    segments.append({
-                        "polygon": asShape(shape),
-                        "id": shapedef["id"],
-                        "nodes": {}
-                    })
+                if shapedef.get("file"):
+                    sf = shapefile.Reader(shapedef["file"])
+                    shapes = sf.shapes()
+                else:
+                    shapes = []
+                segments.append({
+                    "polygons": [asShape(shape) for shape in shapes],
+                    "id": shapedef["id"],
+                    "nodes": {}
+                })
 
     # Load already assigned nodes from destdir
     known_nodes = dict()
@@ -110,11 +113,12 @@ def main(params):
                             point = Point(n["nodeinfo"]["location"]["longitude"], n["nodeinfo"]["location"]["latitude"])
                             contained = False
                             for segment in segments:
-                                if (segment["polygon"].contains(point)):
-                                    n["segment"] = segment
-                                    segment["nodes"][id] = n
-                                    contained = True
-                                    break
+                                for polygon in segment["polygons"]:
+                                    if (polygon.contains(point)):
+                                        n["segment"] = segment
+                                        segment["nodes"][id] = n
+                                        contained = True
+                                        break
                             if not contained:
                                 unknown["nodes"][id] = n
                         else:

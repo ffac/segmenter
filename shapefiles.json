@@ -1,4 +1,5 @@
 [
+{ "id": "01" },
 { "file": "shapefiles/ffac_segment02_wgs84.shp", "id": "02" },
 { "file": "shapefiles/ffac_segment03_wgs84.shp", "id": "03" },
 { "file": "shapefiles/ffac_segment04_wgs84.shp", "id": "04" },
