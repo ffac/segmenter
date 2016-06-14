@@ -6,7 +6,6 @@ import subprocess
 import os
 import sys
 import pwd
-import syslog
 
 def drop_privs(user):
     pwnam = pwd.getpwnam(user)
@@ -16,9 +15,6 @@ def drop_privs(user):
         os.setuid(pwnam.pw_uid)
 
 drop_privs("fastd")
-
-syslog.openlog(logoption=syslog.LOG_PID | syslog.LOG_PERROR)
-syslog.syslog("daemon started")
 
 PORT = 11684
 
@@ -48,19 +44,16 @@ class WebhookHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         self.do_GET()
 
     def reload(self):
-        syslog.syslog("triggering fastd config reload")
-        for seg in range(1,8):
+        for seg in range(1,8): # the second value is exluded
             fn = "/var/run/fastd.{0:02}-clients.pid".format(seg)
             subprocess.call(["pkill", "-HUP", "-F", fn])
         for fn in ["/var/run/fastd.00-clients.pid"]:
             subprocess.call(["pkill", "-USR2", "-F", fn])
 
     def pull_from_github(self):
-        syslog.syslog("pull from github triggered")
         old_commit = subprocess.check_output(["git", "rev-parse", "HEAD"])
         subprocess.call(["git", "pull"])
         new_commit = subprocess.check_output(["git", "rev-parse", "HEAD"])
-        syslog.syslog("old commit: {}, new commit: {}".format(old_commit, new_commit))
         if old_commit != new_commit:
             self.reload()
 
@@ -68,6 +61,6 @@ Handler = WebhookHTTPRequestHandler
 
 httpd = socketserver.TCPServer(("", PORT), Handler)
 
-syslog.syslog("serving at port {}".format(PORT))
+print("serving at port", PORT)
 httpd.serve_forever()
 
