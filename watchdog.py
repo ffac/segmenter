@@ -10,8 +10,12 @@ import parser.batman
 import requests
 import os
 import subprocess
+import syslog
 
 def main(params):
+    syslog.openlog(logoption=syslog.LOG_PID | syslog.LOG_PERROR)
+    syslog.syslog("daemon started")
+
     config = json.load(params['config_file'])
     nodename = params['node_name']
     os.environ["SUPERNODE"] = nodename
@@ -23,7 +27,7 @@ def main(params):
             try:
                 watchdog.check_segment(segment)
             except Exception as e:
-                print("error checking segment {}: {}".format(segment,e))
+                syslog.syslog("error checking segment {}: {}".format(segment,e))
         time.sleep(1)
 
 class Watchdog:
@@ -39,10 +43,10 @@ class Watchdog:
         if webhook_file != None:
             with open(webhook_file, 'r') as f:
                 self.webhook_url = f.read().strip()
-            print("Sending alerts to slack!")
+            syslog.syslog("Sending alerts to slack!")
 
     def check_segment(self, segment):
-        #print("Checking segment {} on supernode {}".format(segment, self.nodename))
+        #syslog.syslog("Checking segment {} on supernode {}".format(segment, self.nodename))
         segment_config = self.config['segments'][segment]
         batman_if = segment_config['batman']
 
@@ -52,9 +56,9 @@ class Watchdog:
             interface_config = self.config['interfaces'][gw.interface]
             if not interface_config['ignore']:
                 if gw.gateway in segment_config['gateways']:
-                    print("matching gw: {}".format(gw))
+                    syslog.syslog("gw of correct segment found on client interface: {}".format(gw))
                 else:
-                    print("bad gw: {}".format(gw))
+                    syslog.syslog("gw of wrong segment found on client interface: {}".format(gw))
                     other_seg = self.find_segment_of_gateway(gw.gateway)
                     msg = ""
                     if other_seg:
@@ -67,24 +71,24 @@ class Watchdog:
                         peer = self.fastd_parser.peer_for_mac(fastd_status, gw.nexthop)[0]
                         if peer:
                             msg += ("peer is {} (MACs: {})\n".format(peer[1]['name'], peer[1]['connection']['mac_addresses']))
-                            print("peer ip is {}".format(peer[1]['address']))
+                            syslog.syslog("peer ip is {}".format(peer[1]['address']))
                             msg += ('key "{}";\n'.format(peer[0]))
                             known = self.known_shorts.get(peer[0])
                             if known == None or known.get('segment') != segment: # new short circuit
                                 if self.webhook_url != None:
-                                    print("New entry - send alert!") # TODO implement alert
+                                    syslog.syslog("New entry - send alert!")
                                     self.known_shorts[peer[0]] = { 'segment': segment }
                                     payload= { 'username': 'watchdog on '+self.nodename, 'text': "```" + msg + "```", 'icon_emoji': ':dog2' }
                                     r=requests.post(self.webhook_url,data=json.dumps(payload))
-                                    print("{} {}".format(r.status_code, r.text))
+                                    syslog.syslog("{} {}".format(r.status_code, r.text))
                                 if segment_config['prio'] < self.config['segments'][other_seg]['prio']:
-                                    print("Move node to other segment")
+                                    syslog.syslog("Move node to other segment")
                                     subprocess.call(["./move_to_segment.sh", "./staging", other_seg, peer[0]])
 
                     except Exception as e:
-                        print("error finding fastd key: {}".format(e))
+                        syslog.syslog("error finding fastd key: {}".format(e))
 
-                    print(msg)
+                    syslog.syslog(msg)
 
     def find_segment_of_gateway(self, gw):
         for seg in self.config['segments']:
