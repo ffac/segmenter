@@ -74,6 +74,8 @@ def main(params):
     known_nodes = dict()
     if params["fastd_dir"]:
         for segment in segments:
+            if segment["id"] == "01": # ignore segment 01
+                continue
             segment_dir = params["fastd_dir"]+"/segment-"+segment["id"]
             if os.path.isdir(segment_dir):
                 for fn in os.listdir(segment_dir):
