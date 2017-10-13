@@ -6,6 +6,7 @@ import shapefile
 from shapely.geometry import Point, shape, asShape
 import json
 import pprint
+import string
 
 def main(params):
     os.makedirs(params['dest_dir'], exist_ok=True)
@@ -158,6 +159,8 @@ def main(params):
                 hostname = ""
                 if "nodeinfo" in n and "hostname" in n["nodeinfo"]:
                     hostname = n["nodeinfo"]["hostname"]
+                valid = "-_.() %s%söäüÖÄÜß" % (string.ascii_letters, string.digits)
+                hostname = ''.join(c for c in hostname if c in valid)
                 print("  " + id + " ("+hostname+")")
                 try:
                     tun_mac = n["nodeinfo"]["network"]["mesh"]["bat0"]["interfaces"]["tunnel"][0]
