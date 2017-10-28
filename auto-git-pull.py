@@ -49,7 +49,7 @@ class WebhookHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
     def reload(self):
         syslog.syslog("triggering fastd config reload")
-        for seg in range(1,8):
+        for seg in range(1,8): # The first value is included, the second is excluded
             fn = "/var/run/fastd.{0:02}-clients.pid".format(seg)
             subprocess.call(["pkill", "-HUP", "-F", fn])
         for fn in ["/var/run/fastd.00-clients.pid"]:
