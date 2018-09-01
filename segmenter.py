@@ -96,7 +96,7 @@ def main(params):
             for n in nodedb["nodes"]:
                 id=n["nodeinfo"]["node_id"]
                 if not id in aliases:
-                    if not "flags" in n or not "gateway" in n["flags"] or n["flags"]["gateway"] == False:
+                    if "flags" in n and "uplink" in n["flags"] and n["flags"]["uplink"] == True:
                         nodes[id] = n
                         try:
                             tun_mac = n["nodeinfo"]["network"]["mesh"]["bat0"]["interfaces"]["tunnel"][0]
