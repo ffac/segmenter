@@ -1,9 +1,11 @@
 [
 { "id": "01" },
-{ "file": "shapefiles/ffac_segment02_wgs84.shp", "id": "02" },
-{ "file": "shapefiles/ffac_segment03_wgs84.shp", "id": "03" },
-{ "file": "shapefiles/ffac_segment04_wgs84.shp", "id": "04" },
-{ "file": "shapefiles/ffac_segment05_wgs84.shp", "id": "05" },
-{ "file": "shapefiles/ffac_segment06_wgs84.shp", "id": "06" },
-{ "file": "shapefiles/ffac_segment07_wgs84.shp", "id": "07" }
+{ "file": "shapefiles/segment02.json", "id": "02" },
+{ "file": "shapefiles/segment03.json", "id": "03" },
+{ "file": "shapefiles/segment04.json", "id": "04" },
+{ "file": "shapefiles/segment05.json", "id": "05" },
+{ "file": "shapefiles/segment06.json", "id": "06" },
+{ "file": "shapefiles/segment07.json", "id": "07" },
+{ "file": "shapefiles/segment08.json", "id": "08" },
+{ "file": "shapefiles/segment09.json", "id": "09" }
 ]

@@ -2,9 +2,9 @@
 
 import os
 import argparse
-import shapefile
 from shapely.geometry import Point, shape, asShape
 import json
+import geojson
 import pprint
 import string
 
@@ -60,8 +60,7 @@ def main(params):
             shapedefs = json.load(file_handle)
             for shapedef in shapedefs:
                 if shapedef.get("file"):
-                    sf = shapefile.Reader(shapedef["file"])
-                    shapes = sf.shapes()
+                    shapes = [ geojson.load(open(shapedef["file"], "r")) ]
                 else:
                     shapes = []
                 segments.append({
