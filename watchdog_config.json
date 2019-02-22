@@ -201,6 +201,46 @@
     "tap-server": {
       "fastd_socket": "fastd-server.sock",
       "ignore": true
+    },
+    "eth2.100": {
+      "fastd_socket": "",
+      "ignore": true
+    },
+    "eth2.101": {
+      "fastd_socket": "",
+      "ignore": true
+    },
+    "eth2.102": {
+      "fastd_socket": "",
+      "ignore": true
+    },
+    "eth2.103": {
+      "fastd_socket": "",
+      "ignore": true
+    },
+    "eth2.104": {
+      "fastd_socket": "",
+      "ignore": true
+    },
+    "eth2.105": {
+      "fastd_socket": "",
+      "ignore": true
+    },
+    "eth2.106": {
+      "fastd_socket": "",
+      "ignore": true
+    },
+    "eth2.107": {
+      "fastd_socket": "",
+      "ignore": true
+    },
+    "eth2.108": {
+      "fastd_socket": "",
+      "ignore": true
+    },
+    "eth2.109": {
+      "fastd_socket": "",
+      "ignore": true
     }
   },
   "slack-webhook-url-file": "/root/.slack-webhook-url"
