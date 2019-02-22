@@ -202,43 +202,43 @@
       "fastd_socket": "fastd-server.sock",
       "ignore": true
     },
-    "eth2.100": {
+    "  eth2.100": {
       "fastd_socket": "",
       "ignore": true
     },
-    "eth2.101": {
+    "  eth2.101": {
       "fastd_socket": "",
       "ignore": true
     },
-    "eth2.102": {
+    "  eth2.102": {
       "fastd_socket": "",
       "ignore": true
     },
-    "eth2.103": {
+    "  eth2.103": {
       "fastd_socket": "",
       "ignore": true
     },
-    "eth2.104": {
+    "  eth2.104": {
       "fastd_socket": "",
       "ignore": true
     },
-    "eth2.105": {
+    "  eth2.105": {
       "fastd_socket": "",
       "ignore": true
     },
-    "eth2.106": {
+    "  eth2.106": {
       "fastd_socket": "",
       "ignore": true
     },
-    "eth2.107": {
+    "  eth2.107": {
       "fastd_socket": "",
       "ignore": true
     },
-    "eth2.108": {
+    "  eth2.108": {
       "fastd_socket": "",
       "ignore": true
     },
-    "eth2.109": {
+    "  eth2.109": {
       "fastd_socket": "",
       "ignore": true
     }
