@@ -95,36 +95,35 @@ def main(params):
             for n in nodedb["nodes"]:
                 id=n["nodeinfo"]["node_id"]
                 if not id in aliases:
-                    if "flags" in n and "uplink" in n["flags"] and n["flags"]["uplink"] == True:
-                        nodes[id] = n
-                        try:
-                            tun_mac = n["nodeinfo"]["network"]["mesh"]["bat0"]["interfaces"]["tunnel"][0]
-                            if tun_mac in known_nodes:
-                                segment = known_nodes[tun_mac]
-                                n["segment"] = segment
-                                segment["nodes"][id] = n
-                                continue
-                        except KeyError:
-                            pass
+                    nodes[id] = n
+                    try:
+                        tun_mac = n["nodeinfo"]["network"]["mesh"]["bat0"]["interfaces"]["tunnel"][0]
+                        if tun_mac in known_nodes:
+                            segment = known_nodes[tun_mac]
+                            n["segment"] = segment
+                            segment["nodes"][id] = n
+                            continue
+                    except KeyError:
+                        pass
 
-                        if ("nodeinfo" in n) \
-                                and ("location" in n["nodeinfo"])\
-                                and ("longitude" in n["nodeinfo"]["location"])\
-                                and ("latitude" in n["nodeinfo"]["location"]):
+                    if ("nodeinfo" in n) \
+                            and ("location" in n["nodeinfo"])\
+                            and ("longitude" in n["nodeinfo"]["location"])\
+                            and ("latitude" in n["nodeinfo"]["location"]):
 
-                            point = Point(n["nodeinfo"]["location"]["longitude"], n["nodeinfo"]["location"]["latitude"])
-                            contained = False
-                            for segment in segments:
-                                for polygon in segment["polygons"]:
-                                    if (polygon.contains(point)):
-                                        n["segment"] = segment
-                                        segment["nodes"][id] = n
-                                        contained = True
-                                        break
-                            if not contained:
-                                unknown["nodes"][id] = n
-                        else:
+                        point = Point(n["nodeinfo"]["location"]["longitude"], n["nodeinfo"]["location"]["latitude"])
+                        contained = False
+                        for segment in segments:
+                            for polygon in segment["polygons"]:
+                                if (polygon.contains(point)):
+                                    n["segment"] = segment
+                                    segment["nodes"][id] = n
+                                    contained = True
+                                    break
+                        if not contained:
                             unknown["nodes"][id] = n
+                    else:
+                        unknown["nodes"][id] = n
 
 
     # Check for links of unknown nodes to nodes in other segments
